@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- noindex: supaya halaman ini tidak muncul di hasil pencarian Google dkk -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Panel | HACKCLASS XII TKJ MAHASA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: { dark: '#080B11', card: '#0F172A', border: '#1E293B', accent: '#00F0FF', neonGreen: '#00FF87', purple: '#7928CA', pink: '#FF0080' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] },
+                    boxShadow: {
+                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.35)',
+                        'neon-purple': '0 0 25px rgba(121, 40, 202, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="selection:bg-cyan-500 selection:text-black min-h-screen flex items-center justify-center p-4">
+
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+
+    <div class="w-full max-w-4xl bg-slate-900 border border-cyan-500/30 rounded-3xl shadow-2xl overflow-hidden relative z-10 my-8">
+
+        <!-- VIEW 1: ADMIN LOGIN -->
+        <div id="admin-login-view" class="p-8 sm:p-12 max-w-md mx-auto text-center">
+            <a href="index.html" class="inline-flex items-center gap-2 text-xs text-slate-500 hover:text-cyan-400 font-mono mb-6 transition">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke situs
+            </a>
+            <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 flex items-center justify-center text-2xl mx-auto mb-4">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-black text-white font-mono">ADMIN ACCESS</h3>
+            <p class="text-xs text-slate-400 mt-1 mb-6">Login untuk mengelola konten website kelas</p>
+
+            <div id="login-error" class="hidden mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/40 text-red-400 text-xs font-mono"></div>
+
+            <form id="admin-login-form" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">USERNAME</label>
+                    <input type="text" id="admin-username" required autocomplete="username" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">PASSWORD</label>
+                    <input type="password" id="admin-pass" required autocomplete="current-password" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 font-mono">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold shadow-neon-cyan transition duration-200 mt-2">
+                    LOGIN CONTROL PANEL
+                </button>
+                <p class="text-[11px] text-slate-500 text-center font-mono mt-2">
+                    Belum punya akun? Buka <code>api/install.php</code> sekali untuk membuatnya (lihat README.md).
+                </p>
+            </form>
+        </div>
+
+        <!-- VIEW 2: ADMIN DASHBOARD -->
+        <div id="admin-dashboard-view" class="hidden flex flex-col md:flex-row min-h-[600px]">
+            <div class="w-full md:w-64 bg-slate-950 p-6 border-b md:border-b-0 md:border-r border-slate-800 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <span class="font-bold text-white font-mono text-sm">ADMIN PANEL</span>
+                    </div>
+                    <div class="space-y-1 font-mono text-xs">
+                        <button data-tab="tab-hero" class="admin-tab-btn active w-full text-left px-3 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 font-semibold flex items-center gap-3">
+                            <i class="fa-solid fa-house w-4"></i> General / Hero
+                        </button>
+                        <button data-tab="tab-members" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-user-gear w-4"></i> Kelola Anggota
+                        </button>
+                        <button data-tab="tab-quotes" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-quote-left w-4"></i> Motivasi
+                        </button>
+                        <button data-tab="tab-memories" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-images w-4"></i> Memori Foto
+                        </button>
+                        <button data-tab="tab-dev" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-code w-4"></i> Developer Info
+                        </button>
+                    </div>
+                </div>
+                <div class="pt-6 border-t border-slate-900 space-y-2">
+                    <a href="index.html" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 text-slate-400 hover:text-cyan-400 font-mono text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-arrow-left"></i> LIHAT SITUS
+                    </a>
+                    <button id="logout-btn" class="w-full py-2.5 px-3 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white font-mono text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-right-from-bracket"></i> LOGOUT
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 p-6 sm:p-8 max-h-[80vh] overflow-y-auto">
+
+                <!-- TAB 1: HERO & GENERAL -->
+                <div id="tab-hero" class="admin-content-tab space-y-4">
+                    <h4 class="text-lg font-bold text-white font-mono border-b border-slate-800 pb-2">Pengaturan Hero Section</h4>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Nama Sekolah</label>
+                        <input type="text" id="edit-school-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Judul Utama (Line 1)</label>
+                        <input type="text" id="edit-title-1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Judul Utama (Line 2)</label>
+                        <input type="text" id="edit-title-2" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Deskripsi Utama</label>
+                        <textarea id="edit-description" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Kata Motivasi Hero</label>
+                        <input type="text" id="edit-hero-quote" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                    </div>
+                    <button id="save-hero-btn" class="px-6 py-2.5 rounded-xl bg-cyan-500 text-black font-extrabold text-xs font-mono shadow-neon-cyan">
+                        SIMPAN PERUBAHAN
+                    </button>
+                </div>
+
+                <!-- TAB 2: MEMBERS MANAGEMENT -->
+                <div id="tab-members" class="admin-content-tab hidden space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h4 class="text-lg font-bold text-white font-mono">Kelola Anggota & Guru</h4>
+                        <button id="add-member-btn" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-black text-xs font-mono font-bold">+ Tambah Anggota</button>
+                    </div>
+
+                    <div id="member-form-container" class="hidden bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <h5 id="member-form-title" class="text-sm font-bold text-cyan-400 font-mono">Tambah Anggota Baru</h5>
+                        <input type="hidden" id="member-form-id">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                            <div>
+                                <label class="text-slate-400">Nama Lengkap</label>
+                                <input type="text" id="m-name" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Nama Panggilan</label>
+                                <input type="text" id="m-nickname" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Kategori</label>
+                                <select id="m-category" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                                    <option value="wali">Wali Kelas</option>
+                                    <option value="kaprodi">Kaprodi</option>
+                                    <option value="guru">Guru Produktif</option>
+                                    <option value="siswa">Siswa</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Jabatan / Role</label>
+                                <input type="text" id="m-role" placeholder="Contoh: Ketua Kelas / Guru Network" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Foto Profil (Pilih Galeri Device / URL)</label>
+                                <div class="space-y-1.5">
+                                    <input type="file" id="m-photo-file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-cyan-500/20 file:text-cyan-400 hover:file:bg-cyan-500/30 cursor-pointer">
+                                    <input type="text" id="m-photo" placeholder="Atau URL Foto (https://...)" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Instagram (Username/URL)</label>
+                                <input type="text" id="m-ig" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 font-mono">Quote / Kutipan</label>
+                            <input type="text" id="m-quote" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white">
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="save-member-btn" class="px-4 py-2 rounded-lg bg-cyan-500 text-black font-bold text-xs font-mono">SIMPAN</button>
+                            <button id="cancel-member-btn" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-bold text-xs font-mono">BATAL</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs font-mono">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400">
+                                    <th class="py-2">NAMA</th>
+                                    <th class="py-2">KATEGORI</th>
+                                    <th class="py-2">JABATAN</th>
+                                    <th class="py-2 text-right">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-members-table-body" class="divide-y divide-slate-800 text-slate-300"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: MOTIVATION QUOTES -->
+                <div id="tab-quotes" class="admin-content-tab hidden space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h4 class="text-lg font-bold text-white font-mono">Kelola Quote Motivasi</h4>
+                        <button id="add-quote-btn" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-black text-xs font-mono font-bold">+ Quote Baru</button>
+                    </div>
+                    <div id="admin-quotes-list" class="space-y-3"></div>
+                </div>
+
+                <!-- TAB 4: MEMORIES ARCHIVE -->
+                <div id="tab-memories" class="admin-content-tab hidden space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h4 class="text-lg font-bold text-white font-mono">Kelola Memori Foto</h4>
+                        <button id="add-photo-btn" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-black text-xs font-mono font-bold">+ Upload Foto</button>
+                    </div>
+
+                    <div id="photo-form-container" class="hidden bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3 text-xs font-mono">
+                        <div>
+                            <label class="text-slate-400">Judul / Caption Foto</label>
+                            <input type="text" id="p-caption" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Upload Foto (Pilih dari Galeri atau URL)</label>
+                            <div class="space-y-1.5">
+                                <input type="file" id="p-file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-cyan-500/20 file:text-cyan-400 hover:file:bg-cyan-500/30 cursor-pointer">
+                                <input type="text" id="p-url" placeholder="Atau paste URL Foto (https://...)" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-slate-400">Album / Kategori</label>
+                            <select id="p-album" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                                <option value="Praktik & Pembelajaran">Praktik & Pembelajaran</option>
+                                <option value="Kegiatan Sekolah">Kegiatan Sekolah</option>
+                                <option value="Kebersamaan">Kebersamaan</option>
+                                <option value="Last Chapter">Last Chapter</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-slate-400">Tanggal Momen</label>
+                            <input type="date" id="p-date" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-white">
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="save-photo-btn" class="px-4 py-2 rounded-lg bg-cyan-500 text-black font-bold">SIMPAN FOTO</button>
+                            <button id="cancel-photo-btn" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300">BATAL</button>
+                        </div>
+                    </div>
+
+                    <div id="admin-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                </div>
+
+                <!-- TAB 5: DEVELOPER INFO -->
+                <div id="tab-dev" class="admin-content-tab hidden space-y-4">
+                    <h4 class="text-lg font-bold text-white font-mono border-b border-slate-800 pb-2">Behind The Screen Developer Profile</h4>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Nama Developer</label>
+                        <input type="text" id="edit-dev-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Role / Jabatan Pembuat</label>
+                        <input type="text" id="edit-dev-role" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Bio / Deskripsi</label>
+                        <textarea id="edit-dev-bio" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">Foto Developer (Galeri Device / URL)</label>
+                        <div class="space-y-1.5">
+                            <input type="file" id="edit-dev-photo-file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-cyan-500/20 file:text-cyan-400 hover:file:bg-cyan-500/30 cursor-pointer">
+                            <input type="text" id="edit-dev-photo" placeholder="Atau paste URL Foto..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white">
+                        </div>
+                    </div>
+                    <button id="save-dev-btn" class="px-6 py-2.5 rounded-xl bg-cyan-500 text-black font-extrabold text-xs font-mono shadow-neon-cyan">
+                        SIMPAN PROFIL DEVELOPER
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/admin-app.js"></script>
+</body>
+</html>
